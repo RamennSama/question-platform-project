@@ -43,7 +43,6 @@ A full-stack web application for creating, sharing, and discussing technical que
 
 ### Technical Features
 - RESTful API architecture
-- WebSocket support for real-time features
 - CORS configuration for frontend-backend communication
 - Swagger/OpenAPI documentation
 - MySQL database integration
@@ -286,14 +285,5 @@ This project is open source and available under the MIT License.
 
 ## 🙏 Acknowledgments
 
-- Spring Boot team for the excellent framework
-- React team for the powerful UI library
 - All contributors and supporters of this project
 
-## 📞 Support
-
-For issues, questions, or suggestions, please open an issue on GitHub.
-
----
-
-**Note:** Remember to change default credentials and JWT secret in production environments for security purposes.
