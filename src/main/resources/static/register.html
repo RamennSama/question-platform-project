@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Đăng ký</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="/index.html">Trang chủ</a>
+    <a href="/login.html">Đăng nhập</a>
+  </nav>
+</header>
+<main>
+  <div class="card" style="max-width:420px;margin:32px auto">
+    <h1 class="h1">Tạo tài khoản</h1>
+    <p class="muted">Điền thông tin bên dưới để tạo tài khoản</p>
+    <form id="registerForm" class="form">
+      <input class="input" name="name" placeholder="Tên hiển thị" required>
+      <input class="input" name="email" placeholder="Email" required>
+      <input class="input" name="password" type="password" placeholder="Mật khẩu" required>
+      <input class="input" name="confirm" type="password" placeholder="Xác nhận mật khẩu" required>
+      <button class="btn" type="submit">Đăng ký</button>
+      <a class="muted" href="/login.html">Đã có tài khoản? Đăng nhập</a>
+    </form>
+    <p id="error" style="color:#ef4444;margin-top:8px"></p>
+    <p id="success" style="color:#10b981;margin-top:8px"></p>
+  </div>
+</main>
+<footer class="footer">© Blog Project</footer>
+<script src="/js/api.js"></script>
+<script>
+  renderNav();
+  document.getElementById('registerForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target)
+    const name = fd.get('name')
+    const email = fd.get('email')
+    const password = fd.get('password')
+    const confirm = fd.get('confirm')
+    const errorEl = document.getElementById('error')
+    const successEl = document.getElementById('success')
+    errorEl.textContent = ''
+    successEl.textContent = ''
+    if (password !== confirm) { errorEl.textContent = 'Mật khẩu không khớp'; return }
+    try {
+      await API.apiFetch('/api/auth/register', { method: 'POST', body: { name, email, password } })
+      successEl.textContent = 'Đăng ký thành công. Bạn có thể đăng nhập ngay.'
+      setTimeout(()=> location.href='/login.html', 1200)
+    } catch(err) {
+      errorEl.textContent = err.message
+    }
+  })
+</script>
+</body>
+</html>
+

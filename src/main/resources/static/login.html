@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Đăng nhập</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <!-- ...existing code... -->
+  </nav>
+</header>
+<main>
+  <div class="card" style="max-width:420px;margin:32px auto">
+    <h1 class="h1">Đăng nhập</h1>
+    <p class="muted">Nhập email và mật khẩu để tiếp tục</p>
+    <form id="loginForm" class="form">
+      <input class="input" name="email" placeholder="Email" required>
+      <input class="input" name="password" type="password" placeholder="Mật khẩu" required>
+      <button class="btn" type="submit">Đăng nhập</button>
+      <a class="muted" href="/register.html">Chưa có tài khoản? Đăng ký</a>
+    </form>
+    <p id="error" style="color:#ef4444;margin-top:8px"></p>
+  </div>
+</main>
+<footer class="footer">© Blog Project</footer>
+<script src="/js/api.js"></script>
+<script>
+  renderNav();
+  document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target)
+    const payload = { email: fd.get('email'), password: fd.get('password') }
+    try {
+      const data = await API.apiFetch('/api/auth/login', { method: 'POST', body: payload })
+      // Đăng nhập thành công: lưu token và thông tin người dùng
+      API.setAuth({ token: data.token, user: data.user })
+      // Chuyển về trang chủ
+      location.href = '/index.html'
+    } catch(err) {
+      // Sai email/mật khẩu: hiển thị lỗi
+      document.getElementById('error').textContent = err.message || 'Email hoặc mật khẩu không đúng'
+    }
+  })
+</script>
+</body>
+</html>
