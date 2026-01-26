@@ -8,7 +8,7 @@ A full-stack web application that serves as a technical Q&A and blogging platfor
 
 **Backend:** Spring Boot 4.0.1, Java 21, MySQL, Spring Security, JWT, Spring Data JPA, Hibernate  
 **Frontend:** React 18, React Router, Axios, React Quill  
-**Tools:** Maven, Swagger/OpenAPI, Lombok, WebSockets
+**Tools:** Maven, Swagger/OpenAPI, Lombok
 
 ## Key Features & Achievements
 
@@ -53,7 +53,6 @@ A full-stack web application that serves as a technical Q&A and blogging platfor
 
 ## Technical Highlights
 
-- **Real-time Features:** WebSocket integration for real-time updates
 - **API Documentation:** Auto-generated interactive Swagger UI documentation
 - **Development Tools:** Hot reload with Spring Boot DevTools for rapid development
 - **Testing:** Unit tests with JUnit and Spring Boot Test
