@@ -283,7 +283,3 @@ This project is open source and available under the MIT License.
 
 **Ramennsama**
 
-## 🙏 Acknowledgments
-
-- All contributors and supporters of this project
-
