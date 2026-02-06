@@ -10,4 +10,5 @@ public class ExceptionResponses {
     private String message;
 
     private long timestamp;
+    
 }

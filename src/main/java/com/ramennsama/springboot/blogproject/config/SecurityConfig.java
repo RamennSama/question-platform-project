@@ -73,7 +73,7 @@ public class SecurityConfig {
      * ===================== SECURITY SUPPORT BEANS =====================
      * Common beans used by Spring Security (PasswordEncoder, AuthManager, ...)
      */
-
+    // ham nay dc goi ngay ben tren:V
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
