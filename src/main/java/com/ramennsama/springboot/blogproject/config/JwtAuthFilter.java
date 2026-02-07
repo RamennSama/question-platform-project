@@ -40,6 +40,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         
         // Skip JWT filter for public endpoints
         return path.startsWith("/api/auth/") ||
+               path.equals("/api/auth/register") ||
+               path.equals("/api/auth/login") ||
                // Public GET endpoints
                (method.equals("GET") && path.startsWith("/api/posts")) ||
                (method.equals("GET") && path.startsWith("/api/tags")) ||
@@ -49,8 +51,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                path.startsWith("/v3/api-docs") ||
                path.startsWith("/docs") ||
                path.startsWith("/actuator") ||
-               // Frontend files
+               // Frontend files - ALL HTML, CSS, JS, images
                path.equals("/") ||
+               path.equals("/index.html") ||
+               path.equals("/login.html") ||
+               path.equals("/register.html") ||
                path.startsWith("/static") ||
                path.startsWith("/css") ||
                path.startsWith("/js") ||
@@ -62,7 +67,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                path.endsWith(".ico") ||
                path.endsWith(".png") ||
                path.endsWith(".jpg") ||
-               path.endsWith(".svg");
+               path.endsWith(".svg") ||
+               path.endsWith(".woff") ||
+               path.endsWith(".woff2") ||
+               path.endsWith(".ttf");
     }
 
     @Override

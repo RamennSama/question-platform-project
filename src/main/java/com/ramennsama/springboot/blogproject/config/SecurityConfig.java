@@ -42,12 +42,15 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/",
                                 "/index.html",
+                                "/login.html",
+                                "/register.html",
                                 "/favicon.ico",
                                 "/assets/**",
                                 "/static/**",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**")
+                                "/images/**",
+                                "/*.html")
                         .permitAll()
 
                         // ===== AUTH =====
