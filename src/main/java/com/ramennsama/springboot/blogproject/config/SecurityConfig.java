@@ -99,25 +99,16 @@ public class SecurityConfig {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json");
 
-            String path = request.getRequestURI();
-
-            // Nếu là API  trả JSON
-            if (path.startsWith("/api")) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                response.setContentType("application/json");
-                response.getWriter().write("""
-                            {
-                                "status": 401,
-                                "error": "Unauthorized",
-                                "message": "JWT expired or invalid"
-                            }
-                        """);
-            }
-            // Nếu là frontend redirect
-            else {
-                response.sendRedirect("/login.html");
-            }
+            response.setHeader("WWW-Authenticate", "");
+            response.getWriter().write("""
+                    {
+                        "status": 401,
+                        "error": "Unauthorized",
+                        "message": "JWT expired or invalid"
+                    } """);
         };
     }
 
