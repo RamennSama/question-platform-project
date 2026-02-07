@@ -37,22 +37,45 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // ===== PUBLIC (Không cần đăng nhập) =====
+
+                        // ===== FRONTEND (PUBLIC) =====
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/assets/**",
+                                "/static/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**")
+                        .permitAll()
+
+                        // ===== AUTH =====
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+
+                        // ===== PUBLIC API =====
                         .requestMatchers(HttpMethod.GET, "/api/posts", "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tags", "/api/tags/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/{userId}").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**", "/docs").permitAll()
-                        
-                        // ===== ADMIN ONLY =====
+
+                        // ===== SWAGGER =====
+                        .requestMatchers(
+                                "/docs",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**")
+                        .permitAll()
+
+                        // ===== ADMIN =====
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/posts/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/posts/*/approve").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/posts/*/unpublish").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/tags/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/tags/**").hasRole("ADMIN")
-                        
-                        // ===== AUTHENTICATED (USER + ADMIN) =====
+
+                        // ===== AUTHENTICATED =====
                         .requestMatchers(HttpMethod.POST, "/api/posts").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/posts/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/posts/*/like", "/api/posts/*/dislike").authenticated()
@@ -60,14 +83,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/posts/*/comments/**").authenticated()
                         .requestMatchers("/api/auth/info").authenticated()
                         .requestMatchers("/api/users/**").authenticated()
-                        .anyRequest().authenticated()
-                )
+
+                        .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint()))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 
     /**
      * ===================== SECURITY SUPPORT BEANS =====================
@@ -82,11 +104,11 @@ public class SecurityConfig {
 
             response.setHeader("WWW-Authenticate", "");
             response.getWriter().write("""
-            {
-                "status": 401,
-                "error": "Unauthorized",
-                "message": "JWT expired or invalid"
-            } """);
+                    {
+                        "status": 401,
+                        "error": "Unauthorized",
+                        "message": "JWT expired or invalid"
+                    } """);
         };
     }
 
@@ -94,8 +116,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
